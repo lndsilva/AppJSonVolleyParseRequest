@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private TextView txtResult;
+    private Button btnParse;
     private RequestQueue mQueue;
 
     @Override
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         txtResult = findViewById(R.id.txtResult);
-        Button btnParse = findViewById(R.id.btnParse);
+        btnParse = findViewById(R.id.btnParse);
 
         mQueue = Volley.newRequestQueue(this);
 
@@ -39,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private void jsonParse(){
+
+    private void jsonParse() {
         String url = "http://192.168.100.16/heroapi/v1/Api.php?apicall=getheroes";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -48,18 +50,16 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray jsonArray = response.getJSONArray("heroes");
-                            for (int i=0; i < jsonArray.length(); i++){
+                            for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject heroe = jsonArray.getJSONObject(i);
 
+                                int id = heroe.getInt("id");
                                 String name = heroe.getString("name");
                                 String realname = heroe.getString("realname");
                                 int rating = heroe.getInt("rating");
                                 String teamaffiliation = heroe.getString("teamaffiliation");
 
-                                txtResult.append(name + " - " + realname +" - "+ String.valueOf(rating)+ " - "+teamaffiliation+"\n\n");
-
-
-
+                                txtResult.append(name + " - " + realname + " - " + String.valueOf(rating) + " - " + teamaffiliation + "\n\n");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
